@@ -104,8 +104,15 @@ public class TerrainEditorTool : EditorTool
 		sizeSlider.OnValueEdited = () => BrushSettings.Size = (int)sizeSlider.Value;
 		sizeRow.Layout.Add( sizeSlider );
 
-		var sizeValue = sizeRow.Layout.Add( new Label( BrushSettings.Size.ToString() ) );
+		var sizeValue = sizeRow.Layout.Add( new LineEdit( BrushSettings.Size.ToString() ) );
 		sizeValue.MinimumWidth = 35;
+		sizeValue.TextChanged += (string _) =>
+		{
+			if (int.TryParse(sizeValue.Value, out var size))
+			{
+				sizeSlider.Value = size;
+			}
+		};
 		sizeSlider.OnValueEdited += () => sizeValue.Text = ((int)sizeSlider.Value).ToString();
 
 		// Opacity slider
@@ -125,8 +132,15 @@ public class TerrainEditorTool : EditorTool
 		opacitySlider.OnValueEdited = () => BrushSettings.Opacity = opacitySlider.Value;
 		opacityRow.Layout.Add( opacitySlider );
 
-		var opacityValue = opacityRow.Layout.Add( new Label( BrushSettings.Opacity.ToString( "0.00" ) ) );
+		var opacityValue = opacityRow.Layout.Add( new LineEdit( BrushSettings.Opacity.ToString( "0.00" ) ) );
 		opacityValue.MinimumWidth = 35;
+		opacityValue.TextChanged += (string _) =>
+		{
+			if (float.TryParse(opacityValue.Value, out var opacity))
+			{
+				opacitySlider.Value = opacity;
+			}
+		};
 		opacitySlider.OnValueEdited += () => opacityValue.Text = opacitySlider.Value.ToString( "0.00" );
 
 		var tabs = new TabWidget( sidebar );
